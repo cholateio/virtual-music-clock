@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Virtual Music Clock
 
-## Getting Started
+A desktop-grade audio visualization utility built with Electron and Next.js, featuring high-DPI transparent rendering, dynamic color mapping, and treble-sensitive glitch effects.
 
-First, run the development server:
+## Preview
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+![Demo](./public/intro.png)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Why I Made This
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+I built th same project using p5.js and electron 5 years ago without AI. This project is the restructure one. Using totally different techs such as websocket, also with gemini. But the core fft method is the same.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Features
 
-## Learn More
+- 3-Tier Decoupled Architecture: The system is split into three core modules: the Visual Terminal, the Audio Engine Worker, and a Local WebSocket Hub. This design ensures that heavy FFT (Fast Fourier Transform) calculations never block the UI rendering thread, maintaining a rock-solid 60FPS experience.
 
-To learn more about Next.js, take a look at the following resources:
+- High-DPI Sharp Rendering: The system automatically detects the Device Pixel Ratio (DPR) and dynamically scales the Canvas's physical pixel dimensions. This ensures that clock lines and glows remain pin-sharp on 4K or Retina displays without any blurring or artifacts.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Dynamic HSL Color Mapping: Moving beyond static color toggles, the visualizer maps audio bass energy to the HSL color space. As the music intensifies, the hue and lightness shift fluidly from a signature "Miku Green" to vibrant cyan and deep blues, creating a living, breathing interface.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Treble-Triggered Glitch Effects: Built-in real-time treble detection logic monitors high-frequency peaks. When sharp audio triggers occur (such as hi-hats or electronic synths), the clock area undergoes localized horizontal slicing and chromatic aberration effects, adding a rhythmic "shatter" impact to the visuals.
 
-## Deploy on Vercel
+- Smooth Linear Interpolation (Lerp): All spectral data undergoes linear interpolation to absorb sudden zeros or erratic jumps in audio sampling. This results in a spectrum ring that expands and contracts with organic, fluid elasticity.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Tech Stack
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Framework: Electron + Next.js (App Router)
+
+- Communication: Local WebSocket (ws) for cross-window data broadcasting
+
+- Audio Engine: Native Web Audio API for FFT Analysis
+
+- Graphics: HTML5 Canvas API with hardware-accelerated post-processing
+
+## Install
+
+npm install ws
+
+npm install electron concurrently wait-on --save-dev

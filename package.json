@@ -1,22 +1,29 @@
 {
-  "name": "virtual-music-clock",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
-  },
-  "dependencies": {
-    "next": "16.1.6",
-    "react": "19.2.3",
-    "react-dom": "19.2.3"
-  },
-  "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "eslint": "^9",
-    "eslint-config-next": "16.1.6",
-    "tailwindcss": "^4"
-  }
+    "name": "virtual-music-clock",
+    "version": "0.1.0",
+    "private": true,
+    "main": "electron/main.js",
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint",
+        "electron": "wait-on tcp:3000 && electron .",
+        "start:all": "concurrently -k \"npm run dev\" \"npm run electron\""
+    },
+    "dependencies": {
+        "next": "14.x.x",
+        "react": "^18",
+        "react-dom": "^18",
+        "ws": "^8.16.0"
+    },
+    "devDependencies": {
+        "concurrently": "^8.2.2",
+        "electron": "^29.0.0",
+        "wait-on": "^7.2.0",
+        "eslint": "^8",
+        "eslint-config-next": "14.x.x",
+        "postcss": "^8",
+        "tailwindcss": "^3.4.1"
+    }
 }
