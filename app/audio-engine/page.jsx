@@ -24,7 +24,17 @@ export default function AudioEngine() {
 
                 // 取得麥克風或立體聲混音權限
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-
+                // [Minimum Viable] 設備遺失防呆機制：監聽音軌狀態
+                stream.getTracks().forEach((track) => {
+                    track.onended = () => {
+                        console.warn('Audio device lost or track ended');
+                        if (wsRef.current?.readyState === WebSocket.OPEN) {
+                            // 發送 Error 訊號給主視覺
+                            wsRef.current.send(JSON.stringify({ type: 'error', status: 'device_lost' }));
+                        }
+                        setStatus('Error: Audio Device Lost');
+                    };
+                });
                 // 初始化 Web Audio API
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
                 audioCtxRef.current = new AudioContext();

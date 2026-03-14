@@ -187,10 +187,7 @@ export default function ClockTerminal() {
     }, []);
 
     return (
-        <main
-            className="w-screen h-screen overflow-hidden flex items-center justify-center bg-black/20"
-            style={{ WebkitAppRegion: 'drag' }}
-        >
+        <main className="w-screen h-screen overflow-hidden flex items-center justify-center" style={{ WebkitAppRegion: 'drag' }}>
             <canvas ref={canvasRef} className="block" />
         </main>
     );

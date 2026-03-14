@@ -2,7 +2,9 @@
 const nextConfig = {
     output: 'export',
     images: { unoptimized: true },
-    devIndicators: false,
+    devIndicators: {
+        buildActivity: false,
+    },
 };
 
 export default nextConfig;

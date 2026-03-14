@@ -5,25 +5,54 @@
     "main": "electron/main.js",
     "scripts": {
         "dev": "next dev",
-        "build": "next build",
+        "build": "next build && electron-builder",
         "start": "next start",
         "lint": "next lint",
         "electron": "wait-on tcp:3000 && electron .",
         "start:all": "concurrently -k \"npm run dev\" \"npm run electron\""
     },
     "dependencies": {
+        "electron-serve": "^3.0.1",
         "next": "14.x.x",
         "react": "^18",
         "react-dom": "^18",
         "ws": "^8.16.0"
     },
     "devDependencies": {
+        "autoprefixer": "^10.4.27",
         "concurrently": "^8.2.2",
         "electron": "^29.0.0",
-        "wait-on": "^7.2.0",
+        "electron-builder": "^26.8.1",
         "eslint": "^8",
         "eslint-config-next": "14.x.x",
         "postcss": "^8",
-        "tailwindcss": "^3.4.1"
+        "tailwindcss": "^3.4.1",
+        "wait-on": "^7.2.0"
+    },
+    "build": {
+        "appId": "com.virtualmusicclock.app",
+        "productName": "Virtual Music Clock",
+        "directories": {
+            "output": "release"
+        },
+        "files": [
+            "out/**/*",
+            "electron/**/*",
+            "package.json"
+        ],
+        "mac": {
+            "target": "dmg",
+            "category": "public.app-category.music"
+        },
+        "win": {
+            "target": [
+                {
+                    "target": "nsis",
+                    "arch": [
+                        "x64"
+                    ]
+                }
+            ]
+        }
     }
 }
