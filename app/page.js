@@ -18,7 +18,7 @@ export default function ClockTerminal() {
         // 【修改點 1】：已經刪除原本寫死的 size 與 ctx.scale，將控制權完全交給下方的 draw 迴圈
 
         // 連接 WebSocket 取回音訊資料
-        const ws = new WebSocket('ws://localhost:8080');
+        const ws = new WebSocket('ws://127.0.0.1:8080');
         ws.onmessage = (event) => {
             try {
                 const data = JSON.parse(event.data);
