@@ -1,41 +1,39 @@
-## Virtual Music Clock
+# Virtual Music Clock
 
-A desktop-grade audio visualization utility built with Electron and Next.js, featuring high-DPI transparent rendering, dynamic color mapping, and treble-sensitive glitch effects.
+A small always-on-top analog clock for your Windows desktop whose outer ring dances to the music you are playing. Run it, play anything, and the clock's ring swells and shifts color with the sound.
 
-## Preview
+![A transparent clock ring floating on the desktop beside a YouTube video, with its outline pulsing to the music](./public/intro.png)
 
-![Demo](./public/intro.png)
+- **Reacts to sound**: a spectrum ring around the clock expands and contracts with your system audio.
+- **Color follows the bass**: the ring moves from green to cyan to deep blue as the low end gets louder.
+- **Smooth motion**: spectrum values are eased between frames, so the ring flows instead of jittering.
+- **Stays out of the way**: a transparent, borderless, always-on-top window that can be made click-through from the tray menu.
 
-## Why I Made This
+A newer particle version of this clock lives in [swarm-clock](https://github.com/cholateio/swarm-clock).
 
-I built th same project using p5.js and electron 5 years ago without AI. This project is the restructure one. Using totally different techs such as websocket, also with gemini. But the core fft method is the same.
+## How it works
 
-## Features
+```
+System audio (Stereo Mix or mic) ──► hidden audio window: FFT
+        └─► WebSocket 127.0.0.1:8080 ──► clock window: ring + hands
+```
 
-- 3-Tier Decoupled Architecture: The system is split into three core modules: the Visual Terminal, the Audio Engine Worker, and a Local WebSocket Hub. This design ensures that heavy FFT (Fast Fourier Transform) calculations never block the UI rendering thread, maintaining a rock-solid 60FPS experience.
-
-- High-DPI Sharp Rendering: The system automatically detects the Device Pixel Ratio (DPR) and dynamically scales the Canvas's physical pixel dimensions. This ensures that clock lines and glows remain pin-sharp on 4K or Retina displays without any blurring or artifacts.
-
-- Dynamic HSL Color Mapping: Moving beyond static color toggles, the visualizer maps audio bass energy to the HSL color space. As the music intensifies, the hue and lightness shift fluidly from a signature "Miku Green" to vibrant cyan and deep blues, creating a living, breathing interface.
-
-- Treble-Triggered Glitch Effects: Built-in real-time treble detection logic monitors high-frequency peaks. When sharp audio triggers occur (such as hi-hats or electronic synths), the clock area undergoes localized horizontal slicing and chromatic aberration effects, adding a rhythmic "shatter" impact to the visuals.
-
-- Smooth Linear Interpolation (Lerp): All spectral data undergoes linear interpolation to absorb sudden zeros or erratic jumps in audio sampling. This results in a spectrum ring that expands and contracts with organic, fluid elasticity.
-
-## Tech Stack
-
-- Framework: Electron + Next.js (App Router)
-
-- Communication: Local WebSocket (ws) for cross-window data broadcasting
-
-- Audio Engine: Native Web Audio API for FFT Analysis
-
-- Graphics: HTML5 Canvas API with hardware-accelerated post-processing
+The audio is analyzed in a hidden window inside the app and only spectrum numbers reach the clock window; nothing is recorded or sent over the internet.
 
 ## Install
 
-npm install
+Needs Windows and Node.js 22.12 or newer. The clock listens to what your PC plays through the Windows **Stereo Mix** device, or to a microphone if you have no Stereo Mix.
 
-npm run start:all (run locally)
+1. Turn on Stereo Mix: **Sound settings → Recording** (or **More sound settings → Recording**), right-click an empty area, choose **Show Disabled Devices**, then right-click **Stereo Mix** and choose **Enable**. Make it the default recording device.
+2. In a terminal, run `npm install`, then `npm run build`. The installer is written to the `release` folder.
+3. Run the installer and start **Virtual Music Clock**. Drag the clock where you want it, then right-click its tray icon and choose **Lock (mouse pass-through)**.
 
-npm run build (build .exe)
+To try it without installing, run `npm run start:all`.
+
+## Privacy & security
+
+Audio never leaves your machine. The app reads it from the default recording device, turns it into spectrum numbers in memory, and sends only those numbers to its own clock window over a WebSocket bound to `127.0.0.1`, so other computers cannot connect. The socket also rejects any connection whose Origin is not the app itself, so web pages in your browser cannot read it. Microphone permission is granted only to the app's own pages, for audio only. Nothing is saved or uploaded.
+
+## License
+
+[MIT](LICENSE)
