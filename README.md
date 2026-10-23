@@ -1,41 +1,41 @@
 # Virtual Music Clock
 
-**English** | [繁體中文](README.zh-TW.md)
+**繁體中文** | [English](README.en.md)
 
-A small always-on-top analog clock for your Windows desktop whose outer ring dances to the music you are playing. Run it, play anything, and the clock's ring swells and shifts color with the sound.
+一個放在 Windows 桌面、永遠置頂的小型指針時鐘，外圈會跟著你正在播放的音樂跳動。打開它、隨便播點什麼，時鐘外圈就會隨著聲音脹縮、變換顏色。
 
-![A transparent clock ring floating on the desktop beside a YouTube video, with its outline pulsing to the music](./public/intro.png)
+![透明的時鐘外圈浮在桌面上的 YouTube 影片旁，輪廓隨著音樂脈動](./public/intro.png)
 
-- **Reacts to sound**: a spectrum ring around the clock expands and contracts with your system audio.
-- **Color follows the bass**: the ring moves from green to cyan to deep blue as the low end gets louder.
-- **Smooth motion**: spectrum values are eased between frames, so the ring flows instead of jittering.
-- **Stays out of the way**: a transparent, borderless, always-on-top window that can be made click-through from the tray menu.
+- **跟著聲音動**：時鐘周圍的頻譜環會隨系統音訊擴張、收縮。
+- **顏色跟著低音走**：低音越大聲，外圈就從綠色轉成青色，再變成深藍。
+- **動作流暢**：頻譜數值在影格之間做了平滑處理，外圈看起來是流動的，不會抖動。
+- **不擋路**：透明、無邊框、永遠置頂的視窗，可以從系統匣選單切換成滑鼠穿透。
 
-A newer particle version of this clock lives in [swarm-clock](https://github.com/cholateio/swarm-clock).
+這個時鐘較新的粒子版本在 [swarm-clock](https://github.com/cholateio/swarm-clock)。
 
-## How it works
+## 它怎麼運作
 
 ```
-System audio (Stereo Mix or mic) ──► hidden audio window: FFT
-        └─► WebSocket 127.0.0.1:8080 ──► clock window: ring + hands
+系統音訊（立體聲混音或麥克風）──► 隱藏的音訊視窗：FFT
+        └─► WebSocket 127.0.0.1:8080 ──► 時鐘視窗：外圈 + 指針
 ```
 
-The audio is analyzed in a hidden window inside the app and only spectrum numbers reach the clock window; nothing is recorded or sent over the internet.
+音訊在 App 內的一個隱藏視窗裡分析，送到時鐘視窗的只有頻譜數字；不會錄音，也不會透過網路傳出去。
 
-## Install
+## 安裝
 
-Needs Windows and Node.js 22.12 or newer. The clock listens to what your PC plays through the Windows **Stereo Mix** device, or to a microphone if you have no Stereo Mix.
+需要 Windows 和 Node.js 22.12 以上。時鐘透過 Windows 的 **立體聲混音**（Stereo Mix）裝置聽你電腦正在播放的聲音；沒有立體聲混音的話，就改聽麥克風。
 
-1. Turn on Stereo Mix: **Sound settings → Recording** (or **More sound settings → Recording**), right-click an empty area, choose **Show Disabled Devices**, then right-click **Stereo Mix** and choose **Enable**. Make it the default recording device.
-2. In a terminal, run `npm install`, then `npm run build`. The installer is written to the `release` folder.
-3. Run the installer and start **Virtual Music Clock**. Drag the clock where you want it, then right-click its tray icon and choose **Lock (mouse pass-through)**.
+1. 開啟立體聲混音：**音效設定 → 錄製**（或 **更多音效設定 → 錄製**），在空白處按右鍵，選 **顯示已停用的裝置**，再對 **立體聲混音** 按右鍵選 **啟用**。然後把它設成預設錄音裝置。
+2. 在終端機執行 `npm install`，再執行 `npm run build`。安裝程式會產生在 `release` 資料夾。
+3. 執行安裝程式，打開 **Virtual Music Clock**。把時鐘拖到你想放的位置，然後在它的系統匣圖示按右鍵，選 **Lock (mouse pass-through)**。
 
-To try it without installing, run `npm run start:all`.
+不想安裝、只想先試試的話，執行 `npm run start:all`。
 
-## Privacy & security
+## 隱私與安全
 
-Audio never leaves your machine. The app reads it from the default recording device, turns it into spectrum numbers in memory, and sends only those numbers to its own clock window over a WebSocket bound to `127.0.0.1`, so other computers cannot connect. The socket also rejects any connection whose Origin is not the app itself, so web pages in your browser cannot read it. Microphone permission is granted only to the app's own pages, for audio only. Nothing is saved or uploaded.
+音訊不會離開你的電腦。App 從預設錄音裝置讀取音訊，在記憶體裡轉成頻譜數字，只把這些數字透過綁定在 `127.0.0.1` 的 WebSocket 送到自己的時鐘視窗，所以其他電腦連不進來。這個 socket 也會拒絕 Origin 不是 App 本身的連線，所以你瀏覽器裡的網頁讀不到它。麥克風權限只開給 App 自己的頁面，而且只限音訊。不會儲存或上傳任何東西。
 
-## License
+## 授權
 
 [MIT](LICENSE)
