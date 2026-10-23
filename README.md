@@ -1,5 +1,7 @@
 # Virtual Music Clock
 
+**English** | [繁體中文](README.zh-TW.md)
+
 A small always-on-top analog clock for your Windows desktop whose outer ring dances to the music you are playing. Run it, play anything, and the clock's ring swells and shifts color with the sound.
 
 ![A transparent clock ring floating on the desktop beside a YouTube video, with its outline pulsing to the music](./public/intro.png)
